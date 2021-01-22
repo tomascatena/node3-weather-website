@@ -1,12 +1,12 @@
-const request = require("request");
+const request = require('request');
 
 forecast = (latitude, longitude, callback) => {
   const url =
-    "http://api.weatherstack.com/current?access_key=a22bc25aa0ef0c1b93bb9d48d819fe6b&query=" +
+    'http://api.weatherstack.com/current?access_key=a22bc25aa0ef0c1b93bb9d48d819fe6b&query=' +
     encodeURIComponent(latitude) +
-    "," +
+    ',' +
     encodeURIComponent(longitude) +
-    "&units=m";
+    '&units=m';
 
   request(
     {
@@ -15,12 +15,18 @@ forecast = (latitude, longitude, callback) => {
     },
     (error, { body }) => {
       if (error) {
-        callback("Unable to connect to weateher service.", undefined);
+        callback('Unable to connect to weateher service.', undefined);
       } else if (body.error) {
-        callback("Unable to find location", undefined);
+        callback('Unable to find location', undefined);
       } else {
-        const { weather_descriptions, temperature, feelslike } = body.current;
-        const weatherForecast = `${weather_descriptions[0]}. It is currently ${temperature} degrees out. It feels like ${feelslike} degrees out.`;
+        const {
+          weather_descriptions,
+          temperature,
+          feelslike,
+          humidity,
+        } = body.current;
+        const weatherForecast = `${weather_descriptions[0]}. It is currently ${temperature} degrees out. It feels like ${feelslike} degrees out. The humidity is ${humidity}%`;
+
         callback(undefined, {
           weatherForecast,
         });
